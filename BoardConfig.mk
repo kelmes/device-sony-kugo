@@ -25,6 +25,7 @@ endif
 PRODUCT_PLATFORM := loire
 
 BOARD_KERNEL_CMDLINE += androidboot.hardware=kugo
+BOARD_KERNEL_CMDLINE += selinux=0
 
 # Recovery config
 BOARD_SONY_INIT_FLAGS += -DDEV_BLOCK_FOTA_NUM="46"
