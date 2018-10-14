@@ -1,0 +1,16 @@
+#!/bin/sh
+
+BDADDR=$(cat `getprop ro.bt.bdaddr_path`)
+PATCHRAM_ARGS="--patchram /vendor/firmware/BCM4345C0.hcd \
+               --enable_hci \
+               --no2bytes \
+               --tosleep 1000 \
+               --bd_addr $BDADDR"
+
+chmod 0660 /sys/class/rfkill/rfkill0/state
+chmod 0660 /sys/class/rfkill/rfkill0/type
+chgrp dialout /sys/class/rfkill/rfkill0/state
+chgrp dialout /sys/class/rfkill/rfkill0/type
+#rfkill unblock bluetooth
+
+/usr/bin/brcm_patchram_plus $PATCHRAM_ARGS /dev/ttyHS0 &
