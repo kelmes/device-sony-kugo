@@ -1,11 +1,9 @@
 #!/bin/sh
 
-BDADDR=$(cat `getprop ro.bt.bdaddr_path`)
 PATCHRAM_ARGS="--patchram /vendor/firmware/BCM4345C0.hcd \
                --enable_hci \
                --no2bytes \
-               --tosleep 1000 \
-               --bd_addr $BDADDR"
+               --tosleep 1000"
 
 chmod 0660 /sys/class/rfkill/rfkill0/state
 chmod 0660 /sys/class/rfkill/rfkill0/type
