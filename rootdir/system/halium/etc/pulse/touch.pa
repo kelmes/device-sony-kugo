@@ -39,7 +39,12 @@ load-module module-switch-on-connect skip_abstract=yes
 
 ### Automatically load the Pulseaudio Droid
 .ifexists module-droid-card-24.so
-load-module module-droid-card-24 rate=48000
+load-module module-droid-card-24 rate=48000 quirks=+unload_call_exit
+.endif
+
+### Automatically load the audioflinger glue
+.ifexists module-droid-glue-24.so
+load-module module-droid-glue-24
 .endif
 
 ### Automatically load the trust-store module
