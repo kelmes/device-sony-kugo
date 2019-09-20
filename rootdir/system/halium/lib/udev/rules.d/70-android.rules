@@ -180,4 +180,3 @@ ACTION=="add", KERNEL=="ttyMSM0", OWNER="bluetooth", GROUP="bluetooth", MODE="06
 ACTION=="add", KERNEL=="fingerprint", OWNER="system", GROUP="input", MODE="0664"
 ACTION=="add", KERNEL=="pn54x", OWNER="nfc", GROUP="nfc", MODE="0660"
 ACTION=="add", KERNEL=="input[0-9]*", SUBSYSTEM=="input", ENV{ID_INPUT}=="1", ATTRS{name}=="clearpad", ENV{ID_INPUT_TOUCHSCREEN}="1"
-ACTION=="change", DEVPATH=="/devices/virtual/switch/h2w", SUBSYSTEM=="switch", RUN+="/bin/bash /system/halium/usr/share/h2w/switch"
