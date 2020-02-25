@@ -2,7 +2,8 @@
 
 PATCHRAM_ARGS="--patchram /vendor/firmware/BCM4345C0.hcd \
                --enable_hci \
-               --no2bytes"
+               --no2bytes \
+               --baudrate 3000000"
 
 chmod 0660 /sys/class/rfkill/rfkill0/state
 chmod 0660 /sys/class/rfkill/rfkill0/type
