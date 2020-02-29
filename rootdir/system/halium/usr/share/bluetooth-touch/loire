@@ -1,0 +1,31 @@
+#!/bin/sh
+
+PATCHRAM_ARGS="--patchram /vendor/firmware/BCM4345C0.hcd \
+               --enable_hci \
+               --no2bytes \
+               --baudrate 3000000"
+
+chmod 0660 /sys/class/rfkill/rfkill0/state
+chmod 0660 /sys/class/rfkill/rfkill0/type
+chgrp dialout /sys/class/rfkill/rfkill0/state
+chgrp dialout /sys/class/rfkill/rfkill0/type
+
+if rfkill list bluetooth | grep -q "yes"; then
+    WAS_BLOCKED=1
+else
+    WAS_BLOCKED=0
+fi
+
+
+rfkill unblock bluetooth
+/usr/bin/brcm_patchram_plus $PATCHRAM_ARGS /dev/ttyHS0 &
+
+while [ ! -e /sys/class/bluetooth/hci0 ]; do
+    sleep 1
+done
+
+sleep 1
+
+if [ "$WAS_BLOCKED" == "1" ]; then
+    rfkill block bluetooth
+fi

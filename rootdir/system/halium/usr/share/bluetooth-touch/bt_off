@@ -1,5 +1,0 @@
-#!/bin/bash
-
-BRCM_PR_PID=`cat /run/bt_patchram_pid`
-
-kill -9 $BRCM_PR_PID
