@@ -1,31 +1,26 @@
 #!/bin/sh
 
+if [ ! -f /run/fredl_bt_ready ]; then
+	echo "Waiting until bt is ready"
+	exit 0
+fi
+
+echo "RFKILL state: $RFKILL_STATE"
+
 PATCHRAM_ARGS="--patchram /vendor/firmware/BCM4345C0.hcd \
-               --enable_hci \
+               --enable_lpm \
                --no2bytes \
+               --enable_hci \
                --baudrate 3000000"
 
-chmod 0660 /sys/class/rfkill/rfkill0/state
-chmod 0660 /sys/class/rfkill/rfkill0/type
-chgrp dialout /sys/class/rfkill/rfkill0/state
-chgrp dialout /sys/class/rfkill/rfkill0/type
 
-if rfkill list bluetooth | grep -q "yes"; then
-    WAS_BLOCKED=1
-else
-    WAS_BLOCKED=0
+if [ "$RFKILL_STATE" == "1" ]; then
+	/usr/bin/brcm_patchram_plus $PATCHRAM_ARGS /dev/ttyHS0 &
+	BRCM_PR_P_PID=$!
+	echo $BRCM_PR_P_PID > /run/bt_patchram_pid
+elif [ "$RFKILL_STATE" == "0" ]; then
+	kill -9 `cat /run/bt_patchram_pid`
+	rm /run/bt_patchram_pid
 fi
 
-
-rfkill unblock bluetooth
-/usr/bin/brcm_patchram_plus $PATCHRAM_ARGS /dev/ttyHS0 &
-
-while [ ! -e /sys/class/bluetooth/hci0 ]; do
-    sleep 1
-done
-
-sleep 1
-
-if [ "$WAS_BLOCKED" == "1" ]; then
-    rfkill block bluetooth
-fi
+exit 0
