@@ -14,6 +14,7 @@
 
 # Device path
 DEVICE_PATH := device/sony/kugo
+CM_BUILD := kugo
 
 DEVICE_PACKAGE_OVERLAYS += \
     $(DEVICE_PATH)/overlay
